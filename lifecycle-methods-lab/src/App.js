@@ -8,23 +8,37 @@ class App extends React.Component {
     super(props)
   }
       state = {
-        todoItem : "",
-        todoList : []
+        toDoItem : "",
+        toDoList : []
       }
 
   handleSubmit=(e)=>{
     e.preventDefault()
 
-    debugger
     let newItem= e.target.todoItem.value
-      this.setState(prevState=>({
-        todoItem:newItem,
-        todoList:[...prevState.todoList,newItem]
-      })
+    this.setState(prevState=>({
+      toDoItem:newItem,
+      toDoList:[...prevState.toDoList,newItem]
+    })
     )
   }
   handleDelete=(e)=>{
-    debugger
+    e.preventDefault()
+    let deleteIdx= Number(e.target.parentNode.id)
+    
+    this.setState((prevState)=>{
+      let filterToDo= prevState.toDoList.filter((item,i)=>{
+
+        return i !== deleteIdx
+      })
+      return {toDoList:filterToDo}
+    })
+
+
+
+    // this.setState({
+    //   toDoList:[...this.state.toDoList.slice(0,deleteIdx),...this.state.toDoList.slice(deleteIdx+1,this.state.toDoList.length+1)]
+    // })
   }
   render () {
     console.log(this.state)
@@ -32,7 +46,7 @@ class App extends React.Component {
       <div className="App">
         Hello World
         <Form onSubmit={this.handleSubmit}/>
-        <TodoList list={this.state.todoList} onClick={this.handleDelete}/>
+        <TodoList list={this.state.toDoList} onClick={this.handleDelete}/>
       </div>
     );
   }
